@@ -1,43 +1,27 @@
 package com.example.app;
 
+import com.example.app.entity.WeatherEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.ScheduledFuture;
-
 @RestController
+@RequestMapping("/weather")
 public class WeatherController {
+    //@Autowired
+    //private WeatherEntity WeatherEntity;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     public WeatherController(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
         this.restTemplate = restTemplateBuilder.build();
         this.objectMapper = objectMapper;
     }
-    /*public interface WeatherRepository extends JpaRepository<WeatherRepository, String>{
-
-    }
-
-    @Autowired
-    private WeatherRepository weatherRepo;
-
-    @GetMapping("/test")
-    public String listAll(Model model){
-        List<WeatherRepository> listWeather = weatherRepo.findAll();
-        model.addAttribute("listWeather", listWeather);
-
-        return "weather";
-    }*/
-    @RequestMapping(value="/weather/town", method= RequestMethod.GET, produces="application/json")
+    @RequestMapping(value="/town", method=RequestMethod.GET, produces="application/json")
     public JsonNode TownWeather(@RequestParam("town") String town)  {
         try {
             RestTemplate Weather = new RestTemplate();
@@ -58,10 +42,16 @@ public class WeatherController {
         }
     }
 
-    @RequestMapping(value="/weather/towns", method= RequestMethod.GET, produces="application/json")
-    public int TownsNames()  {
+    @RequestMapping(value="/towns", method=RequestMethod.GET, produces="application/json")
+    public JsonNode TownsNames()  {
 
-        return 1;
+        return null;
+    }
+
+    @PostMapping(value="/post")
+    public JsonNode AddTown(@RequestBody WeatherEntity town)  {
+
+        return null;
     }
 
 
