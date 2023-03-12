@@ -1,26 +1,43 @@
 package com.example.app;
 
-import com.example.app.entity.WeatherEntity;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.example.app.model.Town; //Denisj
+import com.example.app.repository.TownRepository;
+import com.example.app.service.ITownService;
+import com.example.app.service.TownService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/weather")
 public class WeatherController {
-    //@Autowired
-    //private WeatherEntity WeatherEntity;
+    @Autowired
+    //private TownService townService;
+    private ITownService townService;
+
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     public WeatherController(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
         this.restTemplate = restTemplateBuilder.build();
         this.objectMapper = objectMapper;
     }
+
+    @GetMapping("/towns")
+    public String findTowns(Model model) {
+        var towns = (List<Town>) townService.findAll();
+        model.addAttribute("town", towns);
+        System.out.println(Arrays.toString(towns.toArray()));
+        return "towns";
+    }
+
+/*
     @RequestMapping(value="/town", method=RequestMethod.GET, produces="application/json")
     public JsonNode TownWeather(@RequestParam("town") String town)  {
         try {
@@ -42,19 +59,29 @@ public class WeatherController {
         }
     }
 
-    @RequestMapping(value="/towns", method=RequestMethod.GET, produces="application/json")
-    public JsonNode TownsNames()  {
+    @RequestMapping(value="/townget", method=RequestMethod.GET)
+    public ResponseEntity GetTownName(@RequestParam String town)  {
 
-        return null;
+        try {
+            return ResponseEntity.ok(weatherService.GetTownName(town));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Произошла ошибкат");
+        }
     }
 
     @PostMapping(value="/post")
-    public JsonNode AddTown(@RequestBody WeatherEntity town)  {
-
-        return null;
+    public ResponseEntity AddTown(@RequestBody WeatherEntity town)  {
+        try {
+            weatherService.AddTown(town);
+            return  ResponseEntity.ok("Город успешно добавлен");
+        }catch (TownAlreadyExistException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Произошла ошибка");
+        }
     }
 
-
+*/
 
     //public interface TaskScheduler {
     //    ScheduledFuture scheduleWithFixedDelay(Runnable task, Date startTime, long delay);

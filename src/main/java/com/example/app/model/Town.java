@@ -1,12 +1,12 @@
-package com.example.app.entity;
+package com.example.app.model;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "weather")
-public class WeatherEntity {
+@Table(name = "towns")
+public class Town {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String town;
     private float lat;
@@ -16,9 +16,17 @@ public class WeatherEntity {
     private float preasure;
     private float windspeed;
 
+    public Town(){}
 
-    public WeatherEntity(){
-
+    public Town(long id, String town, float lat, float lon, float temp, float feellike, float preasure, float windspeed) {
+        this.id = id;
+        this.town = town;
+        this.lat = lat;
+        this.lon = lon;
+        this.temp = temp;
+        this.feellike = feellike;
+        this.preasure = preasure;
+        this.windspeed = windspeed;
     }
 
     public long getId() {
@@ -85,4 +93,18 @@ public class WeatherEntity {
         this.windspeed = windspeed;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Town{");
+        sb.append("id=").append(id);
+        sb.append(", town='").append(town).append('\'');
+        sb.append(", lat='").append(lat).append('\'');
+        sb.append(", lon='").append(lon).append('\'');
+        sb.append(", temp='").append(temp).append('\'');
+        sb.append(", feellike='").append(feellike).append('\'');
+        sb.append(", preasure='").append(preasure).append('\'');
+        sb.append(", windspeed=").append(windspeed);
+        sb.append('}');
+        return sb.toString();
+    }
 }
