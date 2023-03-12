@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/weather")
 public class WeatherController {
     @Autowired
     //private TownService townService;
@@ -29,7 +28,7 @@ public class WeatherController {
         this.objectMapper = objectMapper;
     }
 
-    @GetMapping("/towns")
+    @GetMapping("/weather/towns")
     public String findTowns(Model model) {
         var towns = (List<Town>) townService.findAll();
         model.addAttribute("town", towns);
